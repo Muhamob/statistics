@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Union
 from sklearn.base import BaseEstimator, RegressorMixin
+import utils
 
 
 class LinearRegressor(BaseEstimator, RegressorMixin):
@@ -11,7 +12,7 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
 
     def fit(self, x: np.ndarray, y: np.ndarray):
 
-        observation_matrix = np.hstack([np.ones_like(x[:, 0]).reshape(-1, 1), x])
+        observation_matrix = utils.make_observation_matrix(x, x.shape[1]+1)
         F = observation_matrix.T @ observation_matrix
         self.F_inv = np.linalg.inv(F)
 
@@ -24,13 +25,13 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
     def predict(self, x: Union[np.ndarray, float]) -> Union[np.ndarray, float]:
         assert self.coefs is not None, "You must fit your model first"
 
-        observation_matrix = np.concatenate(([1, ], x))
+        observation_matrix = utils.make_observation_matrix(x, self.coefs.shape[0])
         observation_matrix = observation_matrix.reshape(1, -1)
         y = observation_matrix @ self.coefs
         return y
 
     def _summarize(self, x: np.ndarray, y: np.ndarray):
-        observation_matrix = np.hstack([np.ones_like(x[:, 0]).reshape(-1, 1), x])
+        observation_matrix = utils.make_observation_matrix(x, x.shape[1]+1)
 
         self.y_estimated = observation_matrix@self.coefs
         self.errors = y - self.y_estimated

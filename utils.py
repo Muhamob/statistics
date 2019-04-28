@@ -147,6 +147,24 @@ def compute_partial_corr_matrix(covariance_matrix: np.ndarray) -> np.ndarray:
     return partial_covariance_matrix
 
 
+def make_observation_matrix(x: np.ndarray, n_features: int) -> np.ndarray:
+
+    if len(x.shape) == 2:
+        if x.shape[1] == n_features-1:
+            observation_matrix = np.hstack((np.ones([x.shape[0], 1]), x))
+        elif x.shape[1] != n_features:
+            print(x.shape, n_features)
+            raise Exception("There must be some mistake")
+        else:
+            observation_matrix = x
+    elif len(x.shape) == 1:
+        observation_matrix = np.concatenate(([1, ], x)).reshape(1, -1)
+    else:
+        raise Exception(f"dims of points is {len(x.shape)}, but must be 1 or 2 - dim")
+
+    return  observation_matrix
+
+
 def linear_model_confidence_interval(x: np.ndarray,
                                      coefficients: np.ndarray,
                                      F_inv: np.ndarray,
@@ -166,17 +184,7 @@ def linear_model_confidence_interval(x: np.ndarray,
     alpha = (1 - quantile) / 2
     n_features = F_inv.shape[0]
 
-    if len(x.shape) == 2:
-        if x.shape[1] == n_features-1:
-            observation_matrix = np.hstack((np.ones([x.shape[0], 1]), x))
-        elif x.shape[1] != n_features:
-            raise Exception("There must be some mistake")
-        else:
-            observation_matrix = x
-    elif len(x.shape) == 1:
-        observation_matrix = np.concatenate(([1, ], x)).reshape(1, -1)
-    else:
-        raise Exception(f"dims of points is {len(x.shape)}, but must be 1 or 2 - dim")
+    observation_matrix = make_observation_matrix(x, n_features)
 
     df = n_samples - n_features
 
