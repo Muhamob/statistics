@@ -1,0 +1,10 @@
+README.md
+setup.py
+statils/generator.py
+statils/hypotheses.py
+statils/models.py
+statils/utils.py
+statils.egg-info/PKG-INFO
+statils.egg-info/SOURCES.txt
+statils.egg-info/dependency_links.txt
+statils.egg-info/top_level.txt
