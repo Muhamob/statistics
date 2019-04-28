@@ -178,3 +178,32 @@ def Kolmogorov_normality_test(eta: np.ndarray,
         plt.show()
 
     return p_value
+
+
+def two_regression_cmp_test(rss0: float,
+                            rss1: float,
+                            n_samples: int,
+                            n_features0: int,
+                            n_features1: int,
+                            alpha: float = 0.05,
+                            print_: bool = True):
+    """
+    rss0 is rss for model that has less parameters
+    :param rss0:
+    :param rss1:
+    :return:
+    """
+    assert n_features1>n_features0, Exception("n_features1 must be greater than n_features0")
+    delta = (rss0 - rss1) / rss1 * (n_samples - n_features1) / (n_features1-n_features0)
+
+    print(delta, rss0, rss1)
+
+    p_value = stats.f.sf(delta, n_features1-n_features0, n_samples-n_features1)
+
+    if print_:
+        hyp = 'H_0 : добавление коэффициентов не улучшает статистически регрессию' if p_value > alpha else \
+            'H_1 : добавление коэффициентов улучшает регрессию'
+        print(f"p-значение для теста на сравнение регрессий = {p_value}")
+        print(f"можно принять гипотезу {hyp}")
+
+    return p_value

@@ -222,8 +222,15 @@ def get_Kolmogorov_delta(x: np.ndarray):
     return np.max(np.abs(f2 - f1))
 
 
-def cross_validation_loo(x: np.ndarray,
-                     y: np.ndarray):
+def cross_validation_loo(
+        x: np.ndarray,
+        y: np.ndarray):
+    """
+    TODO: cv must have model as a parameter, now it is only for linear regression
+    :param x:
+    :param y:
+    :return:
+    """
     loo = LeaveOneOut()
     residuals = []
 
