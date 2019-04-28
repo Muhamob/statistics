@@ -207,3 +207,14 @@ def count_inversions(arr: Union[np.ndarray, list, tuple]) -> int:
 
     return inversions
 
+
+def get_Kolmogorov_delta(x: np.ndarray):
+    n_samples = len(x) if isinstance(x, (list, tuple)) else x.shape[0]
+    theta1_hat = np.mean(x)
+    theta2_hat = np.sqrt((1 / (n_samples - 1)) * np.sum((x - theta1_hat) ** 2))
+
+    delta_f = 1.0 / n_samples
+    f2 = stats.norm.cdf(x, loc=theta1_hat, scale=theta2_hat)
+    f1 = delta_f*np.linspace(1, n_samples, n_samples)
+
+    return math.sqrt(n_samples) * np.max(np.abs(f2 - f1))

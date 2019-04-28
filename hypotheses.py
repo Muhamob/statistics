@@ -5,6 +5,7 @@ from sklearn.model_selection import LeaveOneOut
 import tqdm
 from typing import Union
 import utils
+import matplotlib.pyplot as plt
 
 
 def corr_coef_significance_test(correlation_matrix: np.ndarray,
@@ -143,3 +144,38 @@ def randomness_test(err: Union[np.ndarray, list, tuple],
         print(f"можно считать, что гипотеза {hyp} верна")
     else:
         return p_value
+
+
+def Kolmogorov_normality_test(eta: np.ndarray,
+                              num_bootstrap_steps: int = 100000,
+                              alpha: float = 0.05,
+                              print_: bool = True,
+                              plot_: bool = True,
+                              notebook: bool = True):
+    n_samples = eta.shape[0]
+    theta1 = np.mean(eta)
+    theta2 = math.sqrt((1 / (n_samples - 1)) * np.sum((eta - theta1) ** 2))
+
+    deltas = []
+    samples = stats.norm.rvs(loc=theta1, scale=theta2, size=n_samples * num_bootstrap_steps)
+
+    tqdm_bar = tqdm.tqdm_notebook if notebook else tqdm.tqdm
+
+    for i in tqdm_bar(range(num_bootstrap_steps)):
+        batch = samples[n_samples * i:n_samples * (i + 1)]
+        delta = utils.get_Kolmogorov_delta(batch)
+        deltas.append(delta)
+
+    delta_hat = utils.get_Kolmogorov_delta(eta)
+    pos = np.digitize(delta_hat, np.sort(deltas))
+    p_value = 1.0 * pos / num_bootstrap_steps
+
+    if print_:
+        hyp = 'H_0 : ошибки имеют нормальный закон распределения' if p_value > alpha else 'H_1 : not H_0'
+        print(f"p-значение для теста на нормальность ошибки = {p_value}")
+        print(f"можно принять гипотезу {hyp}")
+    if plot_:
+        plt.hist(deltas, bins=50)
+        plt.show()
+
+    return p_value
