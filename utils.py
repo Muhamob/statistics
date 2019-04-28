@@ -4,6 +4,7 @@ import math
 from typing import Union
 from matplotlib import axes
 from matplotlib import pyplot as plt
+from sklearn.model_selection import LeaveOneOut
 
 
 def summary(ksi: np.ndarray,
@@ -217,4 +218,26 @@ def get_Kolmogorov_delta(x: np.ndarray):
     f2 = stats.norm.cdf(x, loc=theta1_hat, scale=theta2_hat)
     f1 = delta_f*np.linspace(1, n_samples, n_samples)
 
-    return math.sqrt(n_samples) * np.max(np.abs(f2 - f1))
+    # return math.sqrt(n_samples) * np.max(np.abs(f2 - f1))
+    return np.max(np.abs(f2 - f1))
+
+
+def cross_validation_loo(x: np.ndarray,
+                     y: np.ndarray):
+    loo = LeaveOneOut()
+    residuals = []
+
+    observation_matrix = make_observation_matrix(x, x.shape[1]+1)
+
+    for train_index, test_index in loo.split(observation_matrix.T):
+        X_train, X_test = observation_matrix[train_index], observation_matrix[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+        beta = np.linalg.pinv(X_train) @ y_train
+        rss = (y_test - X_test @ beta) ** 2
+        residuals.append(rss)
+
+    rss0 = np.sum((y - y.mean()) ** 2)
+    rss_star = sum(residuals)
+    r_start_sq = 1 - rss_star / rss0
+
+    return r_start_sq[0, 0]
