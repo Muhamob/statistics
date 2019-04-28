@@ -2,6 +2,11 @@ import numpy as np
 from typing import Union
 
 
+__all__ = ['DEFAULT_N_FEATURES', 'DEFAULT_N_SAMPLES', 'DEFAULT_SIGMA', 'DEFAUL_LINEAR_FORM',
+           'dataset_from_normal']
+
+
+
 DEFAULT_N_FEATURES = 6
 DEFAULT_N_SAMPLES = 50
 DEFAULT_SIGMA = 1.5
@@ -76,5 +81,3 @@ def dataset_from_normal_given_points(
         linear_form=linear_form_,
         random_seed=random_seed
     )
-
-__all__ = [DEFAULT_N_FEATURES, DEFAULT_N_SAMPLES, DEFAULT_SIGMA, DEFAUL_LINEAR_FORM, dataset_from_normal]

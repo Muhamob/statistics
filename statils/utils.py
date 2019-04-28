@@ -12,14 +12,14 @@ def summary(ksi: np.ndarray,
             inplace: bool = True,
             *args,
             **kwargs) -> Union[axes.Axes, None]:
-    """
-    Shows the summary of dataset, i.e.
-    number of samples/features, shows plots of eta
+    r"""
+    Shows the summary of dataset, i.e. number of features, shows plots of eta
+
     :param ksi: observed model factors
     :param eta: observed model output
     :param inplace: either return axes.Axes or None
-    :param args: *args
-    :param kwargs: **kwargs
+    :param args: args
+    :param kwargs: kwargs
     :return: Union[axes.Axes, None], axes.Axes is plot of observed model output
     """
     n_samples, n_features = ksi.shape
@@ -42,9 +42,12 @@ def summary(ksi: np.ndarray,
 
 
 def get_correlation_matrix(observations: np.ndarray):
-    """
+    r"""
     Construct correlation matrix where
-    corr_ij = \sum_{k} \dfrac{(x_i^k - \bar{x_i})(x_j^k - \bar{x_j})}{\sigma_i \sigma_j}
+
+    .. math::
+        corr_{ij} = \sum_{k} \dfrac{(x_i^k - \bar{x_i})(x_j^k - \bar{x_j})}{\sigma_i \sigma_j}
+
     :param observations: observations with shape [n_samples, n_features]
     :return:
     """
@@ -71,10 +74,12 @@ def pairwise_corr_matrix_ci(corr_matrix: np.ndarray,
                             n_samples: int,
                             beta: float = 0.95,
                             print_: bool = True) -> np.ndarray:
-    """
-    Compute pairwise correlation matrix confidence intervals
-    based on Fisher transform
-    \tilde{z} = \dfrac{1}{2} ln(\dfrac{1+\tilda{r_ij}}{1-\tilda{r_ij}}) = arth \tilda{r_ij}
+    r"""
+    Compute pairwise correlation matrix confidence intervals based on Fisher transform
+
+    .. math::
+        \tilde{z} = \dfrac{1}{2} ln(\dfrac{1+\tilde{r}_{ij}}{1-\tilde{r}_{ij}}) = arth \tilde{r}_{ij}
+
     :param corr_matrix: numpy array of shape [n_features, n_features]
     :param n_samples: number of samples
     :param beta: confidence interval quantile
@@ -107,19 +112,23 @@ def partial_pairwise_corr_matrix_ci(partial_corr_matrix: np.ndarray,
                                     df: int,
                                     beta: float = 0.95,
                                     print_: bool = True) -> np.ndarray:
-    """
+    r"""
     Compute partial pairwise correlation matrix confidence intervals
     based on Fisher transform
 
     I don't know how to name it in English, but in Russian it is "Частный коэффициент корреляции"
-    \ro_{ij} = \dfrac{-Q_{ij}}{\sqrt{Q_{ii} Q_{jj}}}, Q_{ij} is a algebraic appendix of pairwise correlation matrix
+
+    .. math::
+        \rho_{ij} = \dfrac{-Q_{ij}}{\sqrt{Q_{ii} Q_{jj}}}
+
+    :math:`Q_{ij}` is a algebraic appendix of pairwise correlation matrix
 
     alias for pairwise_corr_matrix_ci. Just replace n_samples to n_samples-(n_features-2)
 
     :param corr_matrix: numpy array of shape [n_features, n_features]
     :param df: degrees of freedom = n_samples - n_features
     :param beta: confidence interval quantile
-    :param print_: either to print or not
+    :param print: either to print or not
     :return: confidence intervals matrix with shape [n_features, n_features, 2]
     """
     ci = pairwise_corr_matrix_ci(partial_corr_matrix, df+2, beta, print_)
@@ -133,9 +142,14 @@ def minor(arr: np.ndarray, i: int, j: int) -> np.ndarray:
 
 
 def compute_partial_corr_matrix(covariance_matrix: np.ndarray) -> np.ndarray:
-    """
-    \ro_{ij} = \dfrac{-Q_{ij}}{\sqrt{Q_{ii} Q_{jj}}}, Q_{ij} is a algebraic appendix of pairwise correlation matrix
+    r"""
+    .. math::
+        \rho_{ij} = \dfrac{-Q_{ij}}{\sqrt{Q_{ii} Q_{jj}}},
+
+    :math:`Q_{ij}` is a algebraic appendix of pairwise correlation matrix
+
     :param covariance_matrix: pairwise covariance matrix
+
     :return: partial covariance matrix
     """
     partial_covariance_matrix = np.zeros_like(covariance_matrix)
@@ -172,8 +186,9 @@ def linear_model_confidence_interval(x: np.ndarray,
                                      rss: float,
                                      n_samples: int,
                                      quantile: float = 0.95):
-    """
+    r"""
     TODO: Check if it works properly with multiple points x
+
     :param x:
     :param coefficients:
     :param F_inv:
@@ -225,9 +240,11 @@ def get_Kolmogorov_delta(x: np.ndarray):
 def cross_validation_loo(
         x: np.ndarray,
         y: np.ndarray):
-    """
+    r"""
     TODO: cv must have model as a parameter, now it is only for linear regression
+
     :param x:
+
     :param y:
     :return:
     """

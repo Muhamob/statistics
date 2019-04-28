@@ -11,14 +11,16 @@ def corr_coef_significance_test(correlation_matrix: np.ndarray,
                                 df: int,
                                 alpha: float = 0.1,
                                 print_: bool = True) -> Union[np.ndarray, None]:
-    """
-    H_0 : r_ij = 0
-    H_1 : not H_0
+    r"""
+    .. math::
+        H_0 : r_{ij} = 0 \\
+        H_1 : r_{ij} \ne 0
+
     criterion:
-        |r_ij| >= th(\dfrac{u_{\alpha}}{\sqrt{df-3}})
+    :math:`|r_{ij}| >= th(\dfrac{u_{\alpha}}{\sqrt{df-3}})`
+
     :param correlation_matrix:
-    :param df: in case of simple(Pearson coef) df = n_samples,
-    if partitial correlation coefficient => n_samples - n_features + 2
+    :param df: in case of simple(Pearson coef) df = n_samples, if partitial correlation coefficient => n_samples - n_features + 2
     :param alpha: significance value
     :param print_: either to print or not threshold and u_a
     :return:
@@ -36,11 +38,11 @@ def corr_coef_significance_test(correlation_matrix: np.ndarray,
 
 def pearson_test(observations: np.ndarray,
                  alpha: float = 0.05) -> tuple:
-    """
+    r"""
     Standart Pearson test from scipy stats
     Reccomended usage if n_samples > 500
 
-    if p-value more than alpha then we may consider x_i and x_j not correlated
+    if p-value more than alpha then we may consider :math:`x_i` and :math:`x_j` not correlated
 
     :param observations: shape = [n_samples, n_features
     :param alpha:
@@ -67,18 +69,25 @@ def linear_regression_significance_test(coefficients: np.ndarray,
                                         n_samples: int,
                                         alpha: float = 0.05,
                                         print_: bool = True):
-    """
-    H_0 : \beta_i = 0
-    H_1 : \beta_i \ne 0
+    r"""
+    .. math::
+        H_0: \beta_i = 0 \\
+        H_1: \beta_i \ne 0
 
-    If p-value < alpha then we accept alternative hypothesys
+    If p-value < :math:`\alpha` then we accept alternative hypothesys
 
     :param coefficients:
+
     :param F_inv:
+
     :param rss:
+
     :param n_samples:
+
     :param alpha:
-    :param print_:
+
+    :param print:
+
     :return:
     """
     n_features = F_inv.shape[0]
@@ -123,10 +132,11 @@ def randomness_test(err: Union[np.ndarray, list, tuple],
                     alpha: float = 0.05,
                     print_: bool = True):
     """
-    H_0: err had drawn from random distribution
-    H_1: not H_0
+    .. math::
+        H_0:\ error\ had\ drawn\ from\ random\ distribution \\
+        H_1:\ not\ H_0
 
-    If p-value < alpha then we accept alternative hypothesys
+    If p-value < :math:`\alpha` then we accept alternative hypothesys
 
     :param err:
     :param alpha:
@@ -188,7 +198,8 @@ def two_regression_cmp_test(rss0: float,
                             alpha: float = 0.05,
                             print_: bool = True):
     """
-    rss0 is rss for model that has less parameters
+    :math:`rss_0` is :math:`rss` for model that has less parameters
+
     :param rss0:
     :param rss1:
     :return:
