@@ -7,7 +7,7 @@ testing statistical hypoteses.
 * utils.py contain a number of functions to calculate statistical quantities
 
 
-By now it is a toy repository, however if it will be under development some time
+By now it is a toy repository, however it will be under development for some time
 
 TODO:
 * Make tests
