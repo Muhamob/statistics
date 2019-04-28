@@ -3,7 +3,7 @@ from scipy import stats
 import math
 import tqdm
 from typing import Union
-import utils
+from statils import utils, models, generator
 import matplotlib.pyplot as plt
 
 
@@ -89,7 +89,7 @@ def linear_regression_significance_test(coefficients: np.ndarray,
 
     if print_:
         utils.pretty_print(np.squeeze(p_values), 4, "p-значения теста на значимость коэффициентов ")
-        utils.pretty_print(np.squeeze(p_values)>alpha, None, "Прохождение теста на значимость коэффициентов")
+        utils.pretty_print(np.squeeze(p_values) > alpha, None, "Прохождение теста на значимость коэффициентов")
     else:
         return p_values
 

@@ -248,3 +248,14 @@ def cross_validation_loo(
     r_start_sq = 1 - rss_star / rss0
 
     return r_start_sq[0, 0]
+
+
+def get_two_regression_cmp_test_delta(
+        rss0: float,
+        rss1: float,
+        n_samples: int,
+        n_features0: int,
+        n_features1: int):
+
+    delta = (rss0 - rss1) / rss1 * (n_samples - n_features1) / (n_features1 - n_features0)
+    return delta

@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 from sklearn.base import BaseEstimator, RegressorMixin
-import utils
+from statils import utils
 
 
 class LinearRegressor(BaseEstimator, RegressorMixin):
@@ -12,7 +12,7 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
 
     def fit(self, x: np.ndarray, y: np.ndarray):
 
-        observation_matrix = utils.make_observation_matrix(x, x.shape[1]+1)
+        observation_matrix = utils.make_observation_matrix(x, x.shape[1] + 1)
         F = observation_matrix.T @ observation_matrix
         self.F_inv = np.linalg.inv(F)
 
@@ -31,7 +31,7 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
         return y
 
     def _summarize(self, x: np.ndarray, y: np.ndarray):
-        observation_matrix = utils.make_observation_matrix(x, x.shape[1]+1)
+        observation_matrix = utils.make_observation_matrix(x, x.shape[1] + 1)
 
         self.y_estimated = observation_matrix@self.coefs
         self.errors = y - self.y_estimated
