@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/muhamob/statistics/badge)](https://www.codefactor.io/repository/github/muhamob/statistics)
+
 This repository contains a number of functions for
 testing statistical hypoteses.
 
