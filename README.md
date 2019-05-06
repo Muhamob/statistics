@@ -16,4 +16,4 @@ TODO:
 * More documentation
 * More examples
 * More models, generators and hypotheses
-* Make documentation
+* Make documentation [done]
